@@ -106,14 +106,8 @@ describe('Lifecycle', function() {
     });
 
     describe('phase sequence', function() {
-        it('simple app without lifecycle', function() {
-            // Just test to see if the app is working to quickly identify app and test setup errors vs. lifecycle lib errors.
-            lifecycle = true;
-            buildApp();
-            registerDone(app);
-            return testApp();
-        });
-        it.only('with lifecycle handlers added after init', function() {
+
+        it('with lifecycle handlers added after init', function() {
             var i = 0,
                 called_before,
                 called_main,
@@ -134,19 +128,25 @@ describe('Lifecycle', function() {
             registerDone(lifecycle.main);
             lifecycle.after.use(function(req, res, next) {
                 debug('after');
-                called_main = ++i;
+                called_after = ++i;
                 next();
             });
 
-            return testApp()
-            //.expect('done')
-            .then(function() {
+            return testApp().then(function() {
                 expect(called_before).to.equal(1);
                 expect(called_main).to.equal(2);
 
                 // hopeless?
-                // expect(called_after).to.equal(3);
+                expect(called_after).to.equal(3);
             });
+        });
+
+        it('simple app without lifecycle', function() {
+            // Just test to see if the app is working to quickly identify app and test setup errors vs. lifecycle lib errors.
+            lifecycle = true;
+            buildApp();
+            registerDone(app);
+            return testApp();
         });
     });
 
@@ -177,6 +177,7 @@ describe('Lifecycle', function() {
     }
 
     afterEach(function () {
+        debug('clean')
         app = agent = lifecycle = null;
     });
 
