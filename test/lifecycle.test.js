@@ -105,7 +105,7 @@ describe('Lifecycle', function() {
     });
 
     describe('phase sequence', function() {
-        it('only lifecycle routes after init', function() {
+        it('with lifecycle handlers added after init', function() {
             var i = 0,
                 called_before,
                 called_main,
@@ -136,7 +136,7 @@ describe('Lifecycle', function() {
                 expect(called_before).to.equal(1);
                 expect(called_main).to.equal(2);
 
-                //
+                // hopeless?
                 expect(called_after).to.equal(3);
             });
         });
