@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "description": "Support Before, After phases in express request processing.",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha test"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tarun/express-lifecycle.git"
@@ -26,6 +23,14 @@
     "url": "https://github.com/tarun/express-lifecycle/issues"
   },
   "homepage": "https://github.com/tarun/express-lifecycle#readme",
+
+  "scripts": {
+    "clean": "rm -rf docs coverage",
+    "lint":  "eslint --ignore-path .gitignore .",
+    "test": "npm run lint && mocha --recursive",
+    "test_watch": "mocha --recursive --debug --bail --watch",
+    "cover": "istanbul cover -x '/docs/**' --include-all-sources _mocha -- --recursive"
+  },
 
   "dependencies": {
     "any-promise": "^0.1.0"
