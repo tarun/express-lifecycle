@@ -2,9 +2,23 @@
 
 Attempt at having a before, main and after phase.
 
-# Hopeless ?
+# Usage
+```
+var app = express();
 
-res.send & res.redirect call res.end directly.
+require('express-lifecycle').init(app);
 
-And technically after calling res.end()  - there is no need to call next.
-and within end - we do not have access to
+app.before(function(req, res, next) {
+    // Before everything
+});
+
+app.after(function(req, res, next) {
+    // After everything
+});
+```
+
+# Beta
+Still testing out how it works with errors, etc.
+
+## Hopeless index
+Is this achievable? seemed impossible, then difficult, in the end resorted back to overriding `res.end` - the one thing i didn't wan to do. And somehow survived not being able to access `next` in `end`.
