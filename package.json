@@ -31,7 +31,6 @@
     "cover": "istanbul cover -x '/docs/**' --include-all-sources _mocha -- --recursive"
   },
   "dependencies": {
-    "any-promise": "^0.1.0"
   },
   "peerDependencies": {
     "express": "~4.13.1"

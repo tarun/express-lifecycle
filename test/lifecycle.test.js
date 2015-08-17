@@ -55,7 +55,23 @@ describe('Lifecycle', function() {
             assertPhaseMethods(lc);
         });
 
-        it('should middleware middleware to app', function() {
+        it('should not init app twice', function() {
+            var i = 0;
+            var mock_app = {
+                use: function use() {
+                    i++;
+                },
+                lifecycle: 1,
+                before: 1,
+                main: 1,
+                after: 1
+            };
+
+            var lc = Lifecycle.init(mock_app);
+            expect(mock_app.lifecycle).to.equal(1);
+        });
+
+        it('should add middleware to app', function() {
             var i = 0;
             var mock_app = {
                 use: function() {
@@ -90,8 +106,6 @@ describe('Lifecycle', function() {
             assertPhaseMethods(lc.extend(lc.extend({}, ns), ns).xyz);
         });
 
-        it.skip('should avoid duplicate middleware bind');
-
         function assertPhaseMethods(o) {
             expect(o).to.exist;
             expect(o.before, 'before').to.exist;
@@ -106,6 +120,14 @@ describe('Lifecycle', function() {
     });
 
     describe('phase sequence', function() {
+
+        it('simple app without lifecycle', function() {
+            // Just test to see if the app is working to quickly identify app and test setup errors vs. lifecycle lib errors.
+            lifecycle = true;
+            buildApp();
+            registerDone(app);
+            return testApp();
+        });
 
         it('with lifecycle handlers added after init', function() {
             var i = 0,
@@ -125,12 +147,13 @@ describe('Lifecycle', function() {
                 called_main = ++i;
                 next();
             });
-            registerDone(lifecycle.main);
             lifecycle.after.use(function(req, res, next) {
                 debug('after');
                 called_after = ++i;
                 next();
             });
+
+            registerDone(lifecycle.main);
 
             return testApp().then(function() {
                 expect(called_before).to.equal(1);
@@ -141,13 +164,9 @@ describe('Lifecycle', function() {
             });
         });
 
-        it('simple app without lifecycle', function() {
-            // Just test to see if the app is working to quickly identify app and test setup errors vs. lifecycle lib errors.
-            lifecycle = true;
-            buildApp();
-            registerDone(app);
-            return testApp();
-        });
+        it.skip('after gets called before app middleware if not registered through lifecycle');
+
+        it.skip('after should not get called twice - natural flow end');
     });
 
     function registerDone(router) {
