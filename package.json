@@ -1,6 +1,6 @@
 {
   "name": "express-lifecycle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Support Before, After phases in express request processing.",
   "main": "index.js",
   "repository": {
@@ -30,8 +30,7 @@
     "test_watch": "mocha --recursive --debug --bail --watch",
     "cover": "istanbul cover -x '/docs/**' --include-all-sources _mocha -- --recursive"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "express": "~4.13.1"
   },
